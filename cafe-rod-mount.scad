@@ -4,17 +4,19 @@ hang = 6;
 nail_size = 7;
 base_size = nail_size + 4;
 lift = 7;
-$fn=100;
+$fn=50;
 
-module copy_mirror(vec=[1,0,0])
+module mirror_copy(vec=[1,0,0])
 {
     children();
     mirror(vec) children();
 }
 
-copy_mirror()translate([-(radius+hang+4), -(2*radius+hang), 0]){
-//MODEL: 
-//translate([0, 0, radius+ 8])rotate([90, 0, 0])
+
+
+// mirror_copy()mirror_copy([0,1,0])
+// translate([-(radius+hang+4), -2*(2*radius+hang), 0]){
+{
 translate([0,0,1]){
     //cap
     difference(){
@@ -70,9 +72,19 @@ translate([0, 2*radius+lift, 0])
 {
     //hanger hook
     difference(){
-        translate([-radius-3, -radius+3-lift, 0])cube([2*radius+6, 2*radius+2+lift, 2]);
+        translate([-radius-3, -radius+3-lift, 0])
+            cube([2*radius+6, 2*radius+2+lift, 2]);
         union()translate([0,-lift+4,0]){
-            translate([-radius -1, -2*radius-1, -.5])cube([2*radius + 2, 2*radius+1, 3]);
+            translate([-radius -1, -2*radius-1, -.5])difference(){
+                difference()
+{
+    cube([2*radius + 2, 1.5*radius+1, 3]);
+translate([radius+1, radius*1.4])mirror_copy()translate([radius*2.15,0, -.5])
+    cylinder(r=radius*1.1, h = 4);
+    
+}
+;
+                cylinder(r=1, h = depth);};
             translate([0,0,-1])cylinder(r=radius + 1, h=depth);
         }
     }
